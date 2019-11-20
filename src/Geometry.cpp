@@ -83,11 +83,11 @@ Envelope   Geometry::envelope() const
 ///
 ///
 ///
-std::auto_ptr< Geometry > Geometry::boundary() const
+std::unique_ptr< Geometry > Geometry::boundary() const
 {
     algorithm::BoundaryVisitor visitor ;
     accept( visitor );
-    return std::auto_ptr< Geometry >( visitor.releaseBoundary() ) ;
+    return std::unique_ptr< Geometry >( visitor.releaseBoundary() ) ;
 }
 
 
@@ -159,6 +159,12 @@ Geometry::Geometry() : validityFlag_( false )
 Geometry::Geometry( Geometry const& other ) : validityFlag_( other.validityFlag_ )
 {
 
+}
+
+Geometry& Geometry::operator=( const Geometry& other )
+{
+    validityFlag_ = other.validityFlag_;
+    return *this;
 }
 
 bool Geometry::hasValidityFlag() const
